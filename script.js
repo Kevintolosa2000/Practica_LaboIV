@@ -31,23 +31,38 @@ function listAll() {
     Promise.all([employeeData, companyData])
         .then(([employee, company]) => {
 
-            employee.sort((a, b) => a.lastName.localeCompare(b.lastName));
+            /*employee.sort((a, b) => a.lastName.localeCompare(b.lastName));//ordenar por apellido*/
 
-            console.log(company)
+            employee.sort((a, b) => b.id - a.id);//ordenar por id
 
-            const filterEmployees = employee.filter(employee => {
+           /* const filterEmployees = employee.filter(employee => {
                 return employee.companyId !== null && company.find(c => c.name === 'Kwimbee' && c.companyId === employee.companyId);
+            });*/
+
+            /*const filterEmployees = employee.filter(employee => {
+                return employee.companyId !== null && employee.employeeId % 2 === 0;
+            });*/
+
+            /*const filterEmployees = employee.filter(employee => {
+                return employee.companyId !== null && employee.firstName.startsWith('J');
+            });*/
+
+            /*const filterEmployees = employee.filter(employee => {
+                return employee.companyId !== null && employee.email.includes('yelp');
+            });*/
+        
+            const filterEmployees = employee.filter(employee => {
+                return employee.companyId !== null && employee.employeeId>=600 && employee.employeeId<=700 && company.find(c  => c.companyId === employee.companyId && c.companyId % 2 !== 0);
+            });
+            
+            filterEmployees.forEach((ultimateEmployee) => {
+                createTableEmployee(ultimateEmployee, company);
             });
 
-            console.log(filterEmployees);
+            /*company.forEach((companies) => {
+                createTableCompany(employee, companies);
+            });*/
 
-            if (Array.isArray(filterEmployees)) {
-                filterEmployees.forEach((ultimateEmployee) => {
-                    createTable(ultimateEmployee, company);
-                });
-            } else {
-                console.error('Error: filterEmployees is not an array');
-            }
 
         })
         .catch(error => {
@@ -58,7 +73,7 @@ function listAll() {
 
 
 
-function createTable(employee, company) {
+function createTableEmployee(employee, company) {
 
     const rowHTML = `
     <tr id='${employee.employeeId}'>
@@ -71,9 +86,6 @@ function createTable(employee, company) {
       <td>
         <button onclick="deleteEmployee(${employee.employeeId})" class="btn btn-danger">Delete Employee</button>
       </td>
-      <td>
-        <button onclick="deleteCompanyWithAllEmployee(${company.find(c => c.companyId === employee.companyId).companyId})" class="btn btn-danger">Delete Company</button>
-      </td>
     </tr>
     `;
 
@@ -82,6 +94,35 @@ function createTable(employee, company) {
 
 
     console.log(employee);
+}
+
+function createTableCompany(employee, company) {
+
+    let i = 0;
+
+    employee.forEach((employeeData) => {
+
+        if (employeeData.companyId == company.companyId) {
+            i++;
+        }
+
+    })
+
+    const rowHTML = `
+    <tr id='${company.companyId}'>
+      <td>${company.companyId}</td>   
+      <td>${company.name}</td>   
+      <td>${i}</td>
+      <td>
+        <button onclick="deleteCompanyWithAllEmployee(${company.companyId})" class="btn btn-danger">Delete Company</button>
+      </td>
+    </tr>
+    `;
+
+    const employee_table = document.getElementById('company_table');
+    employee_table.insertAdjacentHTML('beforeend', rowHTML);
+
+    console.log(company);
 }
 
 
