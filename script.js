@@ -1,6 +1,5 @@
 
 listAll();
-
 function api_Call(url, HTTPMethod, body) {
     return new Promise((resolve, reject) => {
         var request = new XMLHttpRequest();
@@ -14,7 +13,7 @@ function api_Call(url, HTTPMethod, body) {
             }
         }
         if (HTTPMethod == 'POST') {
-            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
             request.send(body);
         } else {
             request.send();
@@ -50,13 +49,15 @@ function listAll() {
             /*const filterEmployees = employee.filter(employee => {
                 return employee.companyId !== null && employee.email.includes('yelp');
             });*/
-        
+
             const filterEmployees = employee.filter(employee => {
-                return employee.companyId !== null && employee.employeeId>=600 && employee.employeeId<=700 && company.find(c  => c.companyId === employee.companyId && c.companyId % 2 !== 0);
+                return employee.companyId !== null && employee.employeeId >= 600 && employee.employeeId <= 700 && company.find(c => c.companyId === employee.companyId && c.companyId % 2 !== 0);
             })
 
-           /* const filteredEmails = filterEmployees.map(employee => employee.email);*/
-            
+            /* const filteredEmails = filterEmployees.map(employee => employee.email);*/
+
+
+
             filterEmployees.forEach((ultimateEmployee) => {
                 createTableEmployee(ultimateEmployee, company);
             })
@@ -172,6 +173,33 @@ function deleteFromTable(id) {
     row.remove();
 }
 
+
+function submitForm() {
+    const employee = {
+        employeeId: 1001,
+        companyId: 1,
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value
+    };
+
+    console.log('Employee Data:', employee);
+
+    api_Call('https://utn-lubnan-api-2.herokuapp.com/api/Employee', 'POST', employee)
+        .then((response) => {
+            if (response && response.status) {
+                console.log('Status:', response.status);
+                alert('Employee added successfully!');
+            } else {
+                console.error('Error: Response is null or missing status property');
+                alert('Error adding employee. Please check the console for details.');
+            }
+        })
+        .catch((reason) => {
+            console.error('Error:', reason);
+            alert('Error adding employee. Please check the console for details.');
+        });
+}
 
 /*function addEmployeeAndCompany(employee, company) {
     api_Call('https://utn-lubnan-api-2.herokuapp.com/api/Company', 'POST',  JSON.stringify(company))
