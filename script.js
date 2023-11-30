@@ -177,7 +177,7 @@ function deleteFromTable(id) {
 function submitForm() {
     const employee = {
         employeeId: 1001,
-        companyId: 1,
+        companyId: document.getElementById('companyId').value,
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
         email: document.getElementById('email').value
