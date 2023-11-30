@@ -35,7 +35,7 @@ function listAll() {
 
             employee.sort((a, b) => b.id - a.id);//ordenar por id
 
-           /* const filterEmployees = employee.filter(employee => {
+            /*const filterEmployees = employee.filter(employee => {
                 return employee.companyId !== null && company.find(c => c.name === 'Kwimbee' && c.companyId === employee.companyId);
             });*/
 
@@ -53,11 +53,13 @@ function listAll() {
         
             const filterEmployees = employee.filter(employee => {
                 return employee.companyId !== null && employee.employeeId>=600 && employee.employeeId<=700 && company.find(c  => c.companyId === employee.companyId && c.companyId % 2 !== 0);
-            });
+            })
+
+           /* const filteredEmails = filterEmployees.map(employee => employee.email);*/
             
             filterEmployees.forEach((ultimateEmployee) => {
                 createTableEmployee(ultimateEmployee, company);
-            });
+            })
 
             /*company.forEach((companies) => {
                 createTableCompany(employee, companies);
